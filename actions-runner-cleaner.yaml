@@ -18,8 +18,8 @@ spec:
       - image: gjkim42/actions-runner-cleaner:latest
         name: actions-runner-cleaner
         args:
-          - --org=${MY_ORG}
-          - --repository=${MY_REPOSITORY}
+          - --org=${ORG}
+          - --repository=${REPOSITORY}
         env:
           - name: GITHUB_USERNAME
             valueFrom:

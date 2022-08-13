@@ -18,5 +18,5 @@ kubectl create secret generic github-secret \
   --from-literal=GITHUB_USERNAME=${MY_USERNAME} \
   --from-literal=GITHUB_SECRET=${MY_SECRET}
 
-kubectl create -f actions-runner-cleaner.yaml
+ORG=MY_ORG REPOSITORY=MY_REPOSITORY envsubst < actions-runner-cleaner.yaml | kubectl create -f -
 ```
