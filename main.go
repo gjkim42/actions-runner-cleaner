@@ -14,7 +14,7 @@ var (
 	baseURL    string
 	uploadURL  string
 	username   = os.Getenv("GITHUB_USERNAME")
-	password   = os.Getenv("GITHUB_PASSWORD")
+	secret     = os.Getenv("GITHUB_SECRET")
 	org        string
 	repository string
 )
@@ -31,7 +31,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	if username == "" || password == "" {
+	if username == "" || secret == "" {
 		glog.Error("GITHUB_USERNAME and GITHUB_PASSWORD must be set")
 		os.Exit(1)
 	}
@@ -52,7 +52,7 @@ func main() {
 func newGithubClient() (*github.Client, error) {
 	trans := &github.BasicAuthTransport{
 		Username: username,
-		Password: password,
+		Password: secret,
 	}
 
 	if baseURL != "" && uploadURL != "" {
