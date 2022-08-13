@@ -7,6 +7,6 @@ time.
 go install github.com/gjkim42/actions-runner-cleaner@latest
 
 export GITHUB_USERNAME=YOUR_GITHUB_USERNAME
-export GITHUB_PASSWORD=YOUR_GITHUB_PASSWORD
+export GITHUB_SECRET=YOUR_GITHUB_SECRET
 actions-runner-cleaner --help
 ```
