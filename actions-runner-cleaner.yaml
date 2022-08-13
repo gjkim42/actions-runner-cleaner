@@ -1,0 +1,42 @@
+apiVersion: v1
+data:
+  GITHUB_PASSWORD: TVlfUEFTU1dPUkQ=
+  GITHUB_USERNAME: TVlfVVNFUk5BTUU=
+kind: Secret
+metadata:
+  name: github-secret
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: actions-runner-cleaner
+  name: actions-runner-cleaner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: actions-runner-cleaner
+  template:
+    metadata:
+      labels:
+        app: actions-runner-cleaner
+    spec:
+      containers:
+      - image: gjkim42/actions-runner-cleaner:latest
+        name: actions-runner-cleaner
+        args:
+          - --org=target-org
+        env:
+          - name: GITHUB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: github-secret
+                key: GITHUB_USERNAME
+          - name: GITHUB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: github-secret
+                key: GITHUB_PASSWORD
