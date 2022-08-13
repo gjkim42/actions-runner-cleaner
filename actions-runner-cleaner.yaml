@@ -26,8 +26,8 @@ spec:
               secretKeyRef:
                 name: github-secret
                 key: GITHUB_USERNAME
-          - name: GITHUB_PASSWORD
+          - name: GITHUB_SECRET
             valueFrom:
               secretKeyRef:
                 name: github-secret
-                key: GITHUB_PASSWORD
+                key: GITHUB_SECRET
