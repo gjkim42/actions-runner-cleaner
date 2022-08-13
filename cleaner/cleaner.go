@@ -11,10 +11,6 @@ import (
 	"github.com/google/go-github/v45/github"
 )
 
-const (
-	offlineThreshold = 3
-)
-
 type Cleaner struct {
 	client *github.Client
 	// org is the organization to clean up runners for.
@@ -23,18 +19,20 @@ type Cleaner struct {
 	// if empty, organization runners will be cleaned
 	repository        string
 	offlineCountsByID map[int64]int
+	offlineThreshold  int
 }
 
-func NewCleaner(client *github.Client, org string) *Cleaner {
-	return NewCleanerWithRepository(client, org, "")
+func NewCleaner(client *github.Client, org string, offlineThreshold int) *Cleaner {
+	return NewCleanerWithRepository(client, org, "", offlineThreshold)
 }
 
-func NewCleanerWithRepository(client *github.Client, org, repository string) *Cleaner {
+func NewCleanerWithRepository(client *github.Client, org, repository string, offlineThreshold int) *Cleaner {
 	return &Cleaner{
 		client:            client,
 		org:               org,
 		repository:        repository,
 		offlineCountsByID: make(map[int64]int),
+		offlineThreshold:  offlineThreshold,
 	}
 }
 
@@ -105,7 +103,7 @@ func (c *Cleaner) clean(ctx context.Context) error {
 
 	for id := range offlineRunners {
 		c.offlineCountsByID[id]++
-		if c.offlineCountsByID[id] < offlineThreshold {
+		if c.offlineCountsByID[id] < c.offlineThreshold {
 			continue
 		}
 

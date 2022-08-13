@@ -11,12 +11,13 @@ import (
 )
 
 var (
-	baseURL    string
-	uploadURL  string
-	username   = os.Getenv("GITHUB_USERNAME")
-	secret     = os.Getenv("GITHUB_SECRET")
-	org        string
-	repository string
+	baseURL          string
+	uploadURL        string
+	username         = os.Getenv("GITHUB_USERNAME")
+	secret           = os.Getenv("GITHUB_SECRET")
+	org              string
+	repository       string
+	offlineThreshold = 3
 )
 
 func init() {
@@ -26,6 +27,7 @@ func init() {
 	flag.StringVar(&uploadURL, "upload-url", uploadURL, "Upload URL for GitHub API")
 	flag.StringVar(&org, "org", org, "GitHub organization to clean up runners")
 	flag.StringVar(&repository, "repository", repository, "GitHub repository to clean up runners")
+	flag.IntVar(&offlineThreshold, "offline-threshold", offlineThreshold, "Number of times a runner must be offline before it is deleted")
 }
 
 func main() {
@@ -42,7 +44,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = cleaner.NewCleanerWithRepository(client, org, repository).Run(context.Background())
+	err = cleaner.NewCleanerWithRepository(client, org, repository, offlineThreshold).Run(context.Background())
 	if err != nil {
 		glog.Error(err)
 		os.Exit(1)
