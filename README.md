@@ -14,7 +14,9 @@ actions-runner-cleaner --help
 ## Deploy actinos-runner-cleaner to the kubernetes
 
 ```sh
-kubectl create secret generic github-secret --from-literal=GITHUB_USERNAME=${MY_USERNAME} --from-literal=GITHUB_SECRET=${MY_SECRET}
+kubectl create secret generic github-secret \
+  --from-literal=GITHUB_USERNAME=${MY_USERNAME} \
+  --from-literal=GITHUB_SECRET=${MY_SECRET}
 
 kubectl create -f actions-runner-cleaner.yaml
 ```
